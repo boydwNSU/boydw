@@ -2,6 +2,7 @@
 public class Question
 {
     public string fact;
-    public bool isTrue;
+    public bool isCorrect;
+    public string answers;
 	
 }
