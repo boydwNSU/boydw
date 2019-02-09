@@ -35,59 +35,97 @@ public class GameManager : MonoBehaviour
 
     public TextAsset testing;
 
-    List<SavedQuestions> theQuestion = new List<SavedQuestions>();
-
+    // List<SavedQuestions> theQuestion = new List<SavedQuestions>();
+    
     // Use this for initialization
 
-    SavedQuestions q = new SavedQuestions();
 
 
-     void Start()
+
+    void Start()
     {
         TextAsset testing = Resources.Load<TextAsset>("testing");
 
-        string[] data = testing.text.Split(new char[] { '\n' });
+        string[] data = testing.text.Split(new char[] { ',' });
         Debug.Log(data.Length);
 
-        
-        
+        string[,] eachRow = new string[11,12];
+        string[] spanishTitles = new string[6];
+        string[] englishTitles = new string[6];
+        string[,] spanishTranslations = new string[10, 6];
+        string[,] englishTranslations = new string[10, 6];
+
 
         for (int i = 0; i < data.Length; i++)
         {
-            string[] row = data[i].Split(new char[] { ',' });
-
-            q.yo = row[0];
-            q.tú = row[1];
-            q.él_ella_usted = row[2];
-            q.nosotros_nosotras = row[3];
-            q.ustedes = row[4];
-            q.ellos_ellas = row[5];
-            q.I = row[6];
-            q.you_informal = row[7];
-            q.he_she_you_formal = row[8];
-            q.we_masculine_we_feminine = row[9];
-            q.youAll = row[10];
-            q.they_masculine_they_feminine = row[11];
+          
+            //Debug.Log(data[i]);
             
-            theQuestion.Add(q);
-
-            Debug.Log(q.yo);
         }
-        
+
+        int dataCounter = 0;
+        for(int i = 0; i < 11; i++)
+        {
+            for(int j =0; j < 12; j++)
+            {
+                eachRow[i, j] = data[dataCounter];
+               // Debug.Log("EachRow: " + eachRow[i, j]);
+                dataCounter++;
+            }
+            
+        }
+
+        for(int i = 0; i < 6; i++)
+        {
+            spanishTitles[i] = eachRow[0, i];
+            //Debug.Log("Spanish Titles: " + spanishTitles[i]);
+        }
+        for (int i = 0; i < 6; i++)
+        {
+            englishTitles[i] = eachRow[0, i+6];
+            //Debug.Log("English Titles: " + englishTitles[i]);
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                spanishTranslations[i, j] = eachRow[i+1,j];
+                //Debug.Log("Spanish Translations: " + spanishTranslations[i, j]);
+                
+            }
+
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                englishTranslations[i, j] = eachRow[i + 1, j+6];
+                Debug.Log("English Translations: " + englishTranslations[i, j]);
+
+            }
+
+        }
+
+
+
         if (unansweredQuestions == null || unansweredQuestions.Count == 0)
         {
             unansweredQuestions = questions.ToList<Question>();
         }
+        
 
-        SetCurrentQuestion(data);
+        SetCurrentQuestion(spanishTitles, englishTitles, spanishTranslations, englishTranslations);
     }
 
-    public void SetCurrentQuestion(string[] data)
+    public void SetCurrentQuestion(string[] spanishTitles, string[] englishTitles, string[,] spanishTranslations, string[,] englishTranslations)
     {
 
-        int randomQuestionIndex = Random.Range(0, unansweredQuestions.Count);
-        currentQuestion = unansweredQuestions[randomQuestionIndex];
-        questionText.text = ("What is the proper form of " + data[randomQuestionIndex+6] );
+        int randomColumn = Random.Range(0, 11);
+        int randomRow = Random.Range(0, 9);
+        //currentQuestion = unansweredQuestions[randomColumn];
+        questionText.text = ("What is the proper form of " + spanishTitles[randomColumn] + " " + spanishTranslations[randomRow, randomColumn] );
 
         
         
@@ -113,16 +151,13 @@ public class GameManager : MonoBehaviour
 
 
 
-
-    /*
-
     //[SerializeField]
     //private Animator animator;
 
-
+/*
      void Start()
      {
-         string[] data = QuizQuestions.text.Split(new char[] { 'n' });
+         string[] data = testing.text.Split(new char[] { 'n' });
 
          List<int> row = Enumerable.Range(1, 9).OrderBy(g => System.Guid.NewGuid()).Take(1).ToList();
          Debug.Log(row[0]);
@@ -162,7 +197,7 @@ public class GameManager : MonoBehaviour
 
          int randomQuestionIndex = Random.Range(0, unansweredQuestions.Count);
          currentQuestion = unansweredQuestions[randomQuestionIndex];
-         questionText.text = "What is the proper form of " + englishSpeech[cell[0] + 6] + "\" in Spanish?\n" + pronoun[cell[0]] + ":";
+         questionText.text = "What is the proper form of " + englishSpeech[0] + "\" in Spanish?\n" + pronoun[0] + ":";
 
      }
 
@@ -216,6 +251,6 @@ public class GameManager : MonoBehaviour
          Debug.Log("Selection is NOT correct");
      }
 
-    */
+  */  
 
 }
