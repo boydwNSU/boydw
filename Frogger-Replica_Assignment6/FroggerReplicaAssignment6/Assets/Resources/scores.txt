@@ -1,0 +1,12 @@
+700,Whittney
+600,Anonymous
+500,Pacman
+300,Jay
+300,Bill
+300,CPU
+300,Tina
+300,Icees
+300,Sue
+200,3
+200,Anonymous
+0,CPU
